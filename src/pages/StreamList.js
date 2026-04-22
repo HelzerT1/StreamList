@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function StreamList() {
   const [value, setValue] = useState("");
   const [items, setItems] = useState([]);
   const [editId, setEditId] = useState(null);
+
+  useEffect(() => {
+    const savedItems = localStorage.getItem("streamlistItems");
+
+    if (savedItems) {
+      setItems(JSON.parse(savedItems));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("streamlistItems", JSON.stringify(items));
+  }, [items]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,6 +26,7 @@ function StreamList() {
       const updatedItems = items.map((item) =>
         item.id === editId ? { ...item, text: value } : item
       );
+
       setItems(updatedItems);
       setEditId(null);
     } else {
@@ -22,6 +35,7 @@ function StreamList() {
         text: value,
         completed: false,
       };
+
       setItems([...items, newItem]);
     }
 
@@ -37,11 +51,15 @@ function StreamList() {
     const updatedItems = items.map((item) =>
       item.id === id ? { ...item, completed: !item.completed } : item
     );
+
     setItems(updatedItems);
   };
 
   const handleEdit = (id) => {
     const itemToEdit = items.find((item) => item.id === id);
+
+    if (!itemToEdit) return;
+
     setValue(itemToEdit.text);
     setEditId(id);
   };

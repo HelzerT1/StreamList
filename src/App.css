@@ -41,7 +41,7 @@ body {
 }
 
 .container {
-  max-width: 850px;
+  max-width: 900px;
   margin: 2rem auto;
   padding: 1rem;
 }
@@ -126,4 +126,20 @@ button:hover {
 
 .delete-btn {
   background: var(--danger);
+}
+
+.movie-results {
+  display: grid;
+  gap: 1rem;
+}
+
+.movie-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.error-message {
+  color: var(--danger);
 }
