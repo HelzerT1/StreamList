@@ -2,16 +2,11 @@ import React, { useEffect, useState } from "react";
 
 function StreamList() {
   const [value, setValue] = useState("");
-  const [items, setItems] = useState([]);
-  const [editId, setEditId] = useState(null);
-
-  useEffect(() => {
+  const [items, setItems] = useState(() => {
     const savedItems = localStorage.getItem("streamlistItems");
-
-    if (savedItems) {
-      setItems(JSON.parse(savedItems));
-    }
-  }, []);
+    return savedItems ? JSON.parse(savedItems) : [];
+  });
+  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("streamlistItems", JSON.stringify(items));
