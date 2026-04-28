@@ -1,10 +1,10 @@
 import React from "react";
 import Navbar from "./Navbar";
 
-function Layout({ children }) {
+function Layout({ children, cartCount }) {
   return (
     <>
-      <Navbar />
+      <Navbar cartCount={cartCount} />
       <main className="container">{children}</main>
     </>
   );
