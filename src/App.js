@@ -11,7 +11,12 @@ import "./App.css";
 function App() {
   const [cartItems, setCartItems] = useState(() => {
     const savedCart = localStorage.getItem("cartItems");
-    return savedCart ? JSON.parse(savedCart) : [];
+
+    if (savedCart) {
+      return JSON.parse(savedCart);
+    }
+
+    return [];
   });
 
   const [warning, setWarning] = useState("");
@@ -19,6 +24,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  const cartCount = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   const addToCart = (product) => {
     const isSubscription = product.id <= 4;
@@ -76,7 +86,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Layout cartCount={cartItems.length}>
+      <Layout cartCount={cartCount}>
         <Routes>
           <Route path="/" element={<StreamList />} />
           <Route path="/movies" element={<Movies />} />
