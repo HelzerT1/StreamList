@@ -1,28 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
 import Layout from "./components/Layout";
+
 import StreamList from "./pages/StreamList";
 import Movies from "./pages/Movies";
 import Cart from "./pages/Cart";
 import About from "./pages/About";
 import Subscriptions from "./pages/Subscriptions";
+import CreditCard from "./pages/CreditCard";
+import Login from "./pages/Login";
+
 import "./App.css";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
+
   const [cartItems, setCartItems] = useState(() => {
     const savedCart = localStorage.getItem("cartItems");
 
-    if (savedCart) {
-      return JSON.parse(savedCart);
-    }
-
-    return [];
+    return savedCart ? JSON.parse(savedCart) : [];
   });
 
   const [warning, setWarning] = useState("");
 
   useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(cartItems)
+    );
   }, [cartItems]);
 
   const cartCount = cartItems.reduce(
@@ -32,10 +45,15 @@ function App() {
 
   const addToCart = (product) => {
     const isSubscription = product.id <= 4;
-    const itemInCart = cartItems.find((item) => item.id === product.id);
+
+    const itemInCart = cartItems.find(
+      (item) => item.id === product.id
+    );
 
     if (isSubscription && itemInCart) {
-      setWarning("You can only add one of each subscription.");
+      setWarning(
+        "You can only add one of each subscription."
+      );
       return;
     }
 
@@ -44,24 +62,26 @@ function App() {
     if (itemInCart) {
       const updatedCart = cartItems.map((item) =>
         item.id === product.id
-          ? { ...item, quantity: item.quantity + 1 }
+          ? {
+              ...item,
+              quantity: item.quantity + 1,
+            }
           : item
       );
 
       setCartItems(updatedCart);
     } else {
-      const newItem = {
-        ...product,
-        quantity: 1,
-      };
-
-      setCartItems([...cartItems, newItem]);
+      setCartItems([
+        ...cartItems,
+        { ...product, quantity: 1 },
+      ]);
     }
   };
 
   const removeFromCart = (id) => {
-    const updatedCart = cartItems.filter((item) => item.id !== id);
-    setCartItems(updatedCart);
+    setCartItems(
+      cartItems.filter((item) => item.id !== id)
+    );
   };
 
   const updateQuantity = (id, action) => {
@@ -69,11 +89,17 @@ function App() {
       .map((item) => {
         if (item.id === id) {
           if (action === "increase") {
-            return { ...item, quantity: item.quantity + 1 };
+            return {
+              ...item,
+              quantity: item.quantity + 1,
+            };
           }
 
           if (action === "decrease") {
-            return { ...item, quantity: item.quantity - 1 };
+            return {
+              ...item,
+              quantity: item.quantity - 1,
+            };
           }
         }
 
@@ -84,16 +110,28 @@ function App() {
     setCartItems(updatedCart);
   };
 
+  if (!isLoggedIn) {
+    return <Login setIsLoggedIn={setIsLoggedIn} />;
+  }
+
   return (
     <BrowserRouter>
       <Layout cartCount={cartCount}>
         <Routes>
           <Route path="/" element={<StreamList />} />
+
           <Route path="/movies" element={<Movies />} />
+
           <Route
             path="/subscriptions"
-            element={<Subscriptions addToCart={addToCart} warning={warning} />}
+            element={
+              <Subscriptions
+                addToCart={addToCart}
+                warning={warning}
+              />
+            }
           />
+
           <Route
             path="/cart"
             element={
@@ -104,7 +142,15 @@ function App() {
               />
             }
           />
+
+          <Route
+            path="/credit-card"
+            element={<CreditCard />}
+          />
+
           <Route path="/about" element={<About />} />
+
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Layout>
     </BrowserRouter>
