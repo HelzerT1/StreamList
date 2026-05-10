@@ -7,7 +7,7 @@ function Login({ setIsLoggedIn }) {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    if (email && password) {
+    if (email.trim() && password.trim()) {
       localStorage.setItem("isLoggedIn", "true");
       setIsLoggedIn(true);
     }
@@ -17,11 +17,12 @@ function Login({ setIsLoggedIn }) {
     <div className="login-container">
       <div className="login-card">
         <h1>StreamList Login</h1>
+        <p>Please log in to access the StreamList system.</p>
 
         <form onSubmit={handleLogin}>
           <input
             type="email"
-            placeholder="Enter Email"
+            placeholder="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -29,7 +30,7 @@ function Login({ setIsLoggedIn }) {
 
           <input
             type="password"
-            placeholder="Enter Password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
