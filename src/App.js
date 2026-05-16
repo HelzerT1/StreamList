@@ -96,14 +96,10 @@ function App() {
         <Routes>
           <Route path="/" element={<StreamList />} />
           <Route path="/movies" element={<Movies />} />
-
           <Route
             path="/subscriptions"
-            element={
-              <Subscriptions addToCart={addToCart} warning={warning} />
-            }
+            element={<Subscriptions addToCart={addToCart} warning={warning} />}
           />
-
           <Route
             path="/cart"
             element={
@@ -114,7 +110,6 @@ function App() {
               />
             }
           />
-
           <Route path="/credit-card" element={<CreditCard />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<Navigate to="/" />} />

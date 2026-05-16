@@ -362,3 +362,14 @@ button:hover {
   padding: 0.5rem 0.8rem;
   background: #ef4444;
 }
+.logout-btn {
+  margin-left: 1rem;
+  padding: 0.5rem 0.8rem;
+  background: #ef4444;
+}
+
+.security-note {
+  margin-top: 1rem;
+  color: #facc15;
+  font-size: 0.95rem;
+}

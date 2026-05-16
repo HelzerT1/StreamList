@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 
 function CreditCard() {
-  const [cardName, setCardName] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
+  const savedCard = localStorage.getItem("creditCard");
+  const parsedCard = savedCard ? JSON.parse(savedCard) : null;
+
+  const [cardName, setCardName] = useState(parsedCard?.cardName || "");
+  const [cardNumber, setCardNumber] = useState(parsedCard?.cardNumber || "");
   const [saved, setSaved] = useState(false);
 
   const formatCardNumber = (value) => {
@@ -22,13 +25,13 @@ function CreditCard() {
     };
 
     localStorage.setItem("creditCard", JSON.stringify(cardData));
-
     setSaved(true);
   };
 
   return (
     <section>
       <h1>Credit Card Management</h1>
+      <p>Enter payment information for the StreamList checkout workflow.</p>
 
       <form className="credit-form" onSubmit={handleSubmit}>
         <input
@@ -43,9 +46,7 @@ function CreditCard() {
           type="text"
           placeholder="1234 5678 9012 3456"
           value={cardNumber}
-          onChange={(e) =>
-            setCardNumber(formatCardNumber(e.target.value))
-          }
+          onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
           required
         />
 
@@ -53,10 +54,13 @@ function CreditCard() {
       </form>
 
       {saved && (
-        <p className="success-message">
-          Credit card saved successfully.
-        </p>
+        <p className="success-message">Credit card saved successfully.</p>
       )}
+
+      <p className="security-note">
+        Demo note: This stores card data in localStorage for class requirements.
+        A real production system should use a secure payment processor.
+      </p>
     </section>
   );
 }

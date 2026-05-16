@@ -10,13 +10,12 @@ function Navbar({ cartCount, handleLogout }) {
         <NavLink to="/" end>
           Home
         </NavLink>
-
         <NavLink to="/movies">Movies</NavLink>
         <NavLink to="/subscriptions">Subscriptions</NavLink>
         <NavLink to="/cart">Cart ({cartCount})</NavLink>
         <NavLink to="/about">About</NavLink>
 
-        <button className="logout-btn" onClick={handleLogout}>
+        <button type="button" className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
       </div>
